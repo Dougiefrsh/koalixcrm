@@ -121,3 +121,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
+
+# Add the default auto field to avoid warnings for new models
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   web:
     image: ghcr.io/koalixswitzerland/koalixcrm-dev-container:main
@@ -8,3 +6,6 @@ services:
     volumes:
       - .:/usr/src/app
       - ./data:/usr/src/app/data
+    environment:
+      DJANGO_SETTINGS_MODULE: "projectsettings.settings.development_docker_sqlite_settings"
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"

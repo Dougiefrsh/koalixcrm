@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-
 from django.contrib import admin
-from koalixcrm.crm.documents.quote import Quote, OptionQuote
+from koalixcrm.crm.documents.contract import Contract, OptionContract
 from koalixcrm.crm.documents.purchase_confirmation import PurchaseConfirmation, OptionPurchaseConfirmation
 from koalixcrm.crm.documents.delivery_note import DeliveryNote, OptionDeliveryNote
 from koalixcrm.crm.documents.invoice import Invoice, OptionInvoice
-from koalixcrm.crm.documents.payment_reminder import PaymentReminder, OptionPaymentReminder
-from koalixcrm.crm.documents.purchase_order import PurchaseOrder, OptionPurchaseOrder
-from koalixcrm.crm.documents.contract import Contract, OptionContract
 from koalixcrm.crm.product.tax import Tax, OptionTax
 from koalixcrm.crm.product.unit import Unit, OptionUnit
 from koalixcrm.crm.product.product_type import ProductType, ProductTypeAdminView
@@ -26,7 +22,6 @@ from koalixcrm.crm.reporting.estimation_status import EstimationStatus, Estimati
 from koalixcrm.crm.reporting.agreement_status import AgreementStatus, AgreementStatusAdminView
 from koalixcrm.crm.reporting.agreement_type import AgreementType, AgreementTypeAdminView
 from koalixcrm.crm.reporting.resource_type import ResourceType, ResourceTypeAdminView
-from koalixcrm.crm.reporting.human_resource import HumanResource, HumanResourceAdminView
 from koalixcrm.crm.reporting.resource_manager import ResourceManager, ResourceManagerAdminView
 from koalixcrm.crm.reporting.project import Project, ProjectAdminView
 from koalixcrm.crm.reporting.project_link_type import ProjectLinkType, OptionProjectLinkType
@@ -35,7 +30,19 @@ from koalixcrm.crm.reporting.work import Work, WorkAdminView
 from koalixcrm.crm.reporting.reporting_period import ReportingPeriod, ReportingPeriodAdmin
 from koalixcrm.crm.reporting.reporting_period_status import ReportingPeriodStatus, OptionReportingPeriodStatus
 
+# Import the new models for Deal Tracking and Portfolio Management
+from koalixcrm.crm.models import Deal, PortfolioCompany, Investor, PortfolioCompanyPerformance
 
+# Set the title for the index page BEFORE model registration
+admin.site.index_title = "Private Equity, Documents, and Contracts"
+
+# Register the Private Equity models in their own section at the top
+admin.site.register(Deal)  # Deal Tracking
+admin.site.register(PortfolioCompany)  # Portfolio Company Management
+admin.site.register(Investor)  # Investor Management
+admin.site.register(PortfolioCompanyPerformance)  # Portfolio Company Performance Reporting
+
+# Register the existing models in the admin
 admin.site.register(Customer, OptionCustomer)
 admin.site.register(CustomerGroup, OptionCustomerGroup)
 admin.site.register(CustomerBillingCycle, OptionCustomerBillingCycle)
@@ -45,12 +52,9 @@ admin.site.register(CallForContact, OptionCall)
 admin.site.register(VisitForContact, OptionVisit)
 
 admin.site.register(Contract, OptionContract)
-admin.site.register(Quote, OptionQuote)
 admin.site.register(PurchaseConfirmation, OptionPurchaseConfirmation)
 admin.site.register(DeliveryNote, OptionDeliveryNote)
 admin.site.register(Invoice, OptionInvoice)
-admin.site.register(PaymentReminder, OptionPaymentReminder)
-admin.site.register(PurchaseOrder, OptionPurchaseOrder)
 
 admin.site.register(Unit, OptionUnit)
 admin.site.register(Currency, OptionCurrency)
@@ -64,7 +68,6 @@ admin.site.register(EstimationStatus, EstimationStatusAdminView)
 admin.site.register(AgreementStatus, AgreementStatusAdminView)
 admin.site.register(AgreementType, AgreementTypeAdminView)
 admin.site.register(Work, WorkAdminView)
-admin.site.register(HumanResource, HumanResourceAdminView)
 admin.site.register(ResourceType, ResourceTypeAdminView)
 admin.site.register(ResourceManager, ResourceManagerAdminView)
 admin.site.register(Project, ProjectAdminView)
