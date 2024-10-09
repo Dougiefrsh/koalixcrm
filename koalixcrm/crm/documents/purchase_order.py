@@ -16,6 +16,8 @@ class PurchaseOrder(SalesDocument):
         self.status = 'O'
         self.template_set = self.contract.get_template_set(self)
         self.save()
+
+
         self.attach_sales_document_positions(calling_model)
         self.attach_text_paragraphs()
         self.staff = calling_model.staff
