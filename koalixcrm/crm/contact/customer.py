@@ -8,8 +8,6 @@ from koalixcrm.plugin import *
 from koalixcrm.crm.contact.contact import Contact, ContactCall, ContactVisit,\
     PeopleInlineAdmin, PostalAddressForContact, ContactPostalAddress, \
     ContactPhoneAddress, ContactEmailAddress, CityFilter, StateFilter
-from koalixcrm.crm.documents.contract import Contract
-
 
 class Customer(Contact):
     default_customer_billing_cycle = models.ForeignKey('CustomerBillingCycle',
@@ -21,6 +19,7 @@ class Customer(Contact):
     is_lead = models.BooleanField(default=True)
 
     def create_contract(self, request):
+        from koalixcrm.crm.documents.contract import Contract  # Local import to break circular dependency
         contract = Contract()
         contract.create_from_reference(self, request.user)
         return contract

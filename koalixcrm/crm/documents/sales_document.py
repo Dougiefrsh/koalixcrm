@@ -9,8 +9,15 @@ from koalixcrm.global_support_functions import xstr, make_date_utc
 from koalixcrm.crm.contact.phone_address import PhoneAddress
 from koalixcrm.crm.contact.email_address import EmailAddress
 from koalixcrm.crm.contact.postal_address import PostalAddress
-from koalixcrm.crm.documents.sales_document_position import SalesDocumentPosition, SalesDocumentInlinePosition
-from koalixcrm.djangoUserExtension.models import TextParagraphInDocumentTemplate, UserExtension
+SalesDocument = apps.get_model('crm', 'SalesDocument')
+OptionSalesDocument = apps.get_model('crm', 'OptionSalesDocument')
+from django.apps import apps
+# Function to retrieve TextParagraphInDocumentTemplate model when needed
+def get_text_paragraph_model():
+    return apps.get_model('djangoUserExtension', 'TextParagraphInDocumentTemplate')
+# Function to retrieve UserExtension model when needed
+def get_user_extension_model():
+    return apps.get_model('djangoUserExtension', 'UserExtension')
 from koalixcrm.crm.product.product_type import ProductType
 from koalixcrm.crm.exceptions import TemplateSetMissingInContract
 import koalixcrm.crm.documents.calculations
@@ -136,7 +143,7 @@ class SalesDocument(models.Model):
         objects += list(Currency.objects.filter(id=self.currency.id))
         objects += SalesDocumentPosition.add_positions(position_class, self)
         objects += list(auth.models.User.objects.filter(id=self.staff.id))
-        objects += UserExtension.objects_to_serialize(self, self.staff)
+        from koalixcrm.djangoUserExtension.models import UserExtension
         main_xml = PDFExport.write_xml(objects)
         return main_xml
 
@@ -167,10 +174,11 @@ class SalesDocument(models.Model):
             self.discount = calling_model.discount
 
     def attach_text_paragraphs(self):
-        default_paragraphs = TextParagraphInDocumentTemplate.objects.filter(document_template=self.template_set)
+        default_paragraphs = get_text_paragraph_model().objects.filter(document_template=self.template_set)
         for default_paragraph in list(default_paragraphs):
-            invoice_paragraph = TextParagraphInSalesDocument()
-            invoice_paragraph.create_paragraph(default_paragraph, self)
+          invoice_paragraph = TextParagraphInSalesDocument()
+          invoice_paragraph.create_paragraph(default_paragraph, self)
+
 
     def attach_sales_document_positions(self, calling_model):
         if isinstance(calling_model, SalesDocument):

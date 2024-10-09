@@ -3,7 +3,8 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from koalixcrm.crm.const.status import *
-from koalixcrm.crm.documents.sales_document import SalesDocument, OptionSalesDocument
+SalesDocumentPosition = apps.get_model('crm', 'SalesDocumentPosition')
+SalesDocumentInlinePosition = apps.get_model('crm', 'SalesDocumentInlinePosition')
 from koalixcrm.plugin import *
 
 
